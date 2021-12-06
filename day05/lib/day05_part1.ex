@@ -1,4 +1,4 @@
-defmodule Day05 do
+defmodule Day05.PartOne do
 
   defp load_input(file_name) do
     case File.read("lib/#{file_name}.txt") do
