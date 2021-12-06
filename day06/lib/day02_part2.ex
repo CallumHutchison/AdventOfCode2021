@@ -18,12 +18,10 @@ defmodule Day06.Part2 do
     end
   end
 
-  @doc """
-  Simulate a day for the population of lanternfish
-  Discrete number of ages allowed, so maintain a map of the number of fish
-  of each age, rather than maintaining an exponential list
-  """
   defp simulate_day(_, fish) do
+    # Simulate a day for the population of lanternfish
+    # Discrete number of ages allowed, so maintain a map of the number of fish
+    # of each age, rather than maintaining an exponential list
     %{
       0 => Map.get(fish, 1, 0),
       1 => Map.get(fish, 2, 0),
@@ -37,10 +35,8 @@ defmodule Day06.Part2 do
     }
   end
 
-  @doc """
-  Shorter, but less readable version of simulate_day
-  """
   defp simulate_day_scalable(_, fish) do
+    # Shorter, but less readable version of simulate_day
     Enum.reduce(0..7, %{}, &Map.put(&2, &1, Map.get(fish, &1 + 1, 0)))
     |> Map.update(6, Map.get(fish, 0, 0), &(&1 + Map.get(fish, 0, 0)))
     |> Map.put(8, Map.get(fish, 0, 0))
