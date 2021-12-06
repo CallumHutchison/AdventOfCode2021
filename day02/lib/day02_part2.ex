@@ -1,4 +1,4 @@
-defmodule Day02 do
+defmodule Day02.PartTwo do
   def calculate_distance do
     load_input()
     |> parse_distances
@@ -19,18 +19,18 @@ defmodule Day02 do
   defp parse_distances(commands) do
     Enum.reduce(
       commands,
-      {0, 0},
-      fn {command, distance}, {horizontal, vertical} ->
+      {0, 0, 0},
+      fn {command, magnitude}, {horizontal, vertical, aim} ->
         case command do
-          "forward" -> {horizontal + distance, vertical}
-          "up" -> {horizontal, vertical - distance}
-          "down" -> {horizontal, vertical + distance}
+          "forward" -> {horizontal + magnitude, vertical + aim * magnitude, aim}
+          "up" -> {horizontal, vertical, aim - magnitude}
+          "down" -> {horizontal, vertical, aim + magnitude}
         end
       end
     )
   end
 
-  defp multiply_distances({horizontal, vertical}) do
+  defp multiply_distances({horizontal, vertical, _}) do
     horizontal * vertical
   end
 end
