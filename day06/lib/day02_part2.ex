@@ -1,7 +1,7 @@
 defmodule Day06.Part2 do
-
   def simulate_lanternfish(input_file_name, days) do
     input = load_input(input_file_name)
+
     Enum.reduce(1..days, input, &simulate_day(&1, &2))
     |> Map.values()
     |> Enum.reduce(&(&1 + &2))
@@ -9,12 +9,15 @@ defmodule Day06.Part2 do
 
   defp load_input(file_name) do
     case File.read("lib/#{file_name}.txt") do
-      {:ok, input}  -> String.split(input, ",")
-                      |> Enum.map(&String.to_integer(&1))
-                      |> Enum.reduce(%{}, fn val, acc ->
-                        Map.update(acc, val, 1, &(&1 + 1))
-                      end)
-      _             -> raise("Unable to load input file")
+      {:ok, input} ->
+        String.split(input, ",")
+        |> Enum.map(&String.to_integer(&1))
+        |> Enum.reduce(%{}, fn val, acc ->
+          Map.update(acc, val, 1, &(&1 + 1))
+        end)
+
+      _ ->
+        raise("Unable to load input file")
     end
   end
 
