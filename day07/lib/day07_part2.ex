@@ -4,6 +4,7 @@ defmodule Day07.Part2 do
     positions = load_input(input_file_name)
     calculate_mean(positions)
     |> Enum.map(&calculate_fuel_cost(positions, &1))
+    |> Enum.min()
   end
 
   defp load_input(file_name) do
@@ -14,9 +15,9 @@ defmodule Day07.Part2 do
 
   defp calculate_mean(positions) do
     mean = Enum.sum(positions) / length(positions)
-    # Didn't use the correct method here, but the mean is within 0.5 of the correct answer
+    # Didn't use an exact method here, but the mean is within 0.5 of the correct answer
     # So one of these ints is the correct target position
-    # Not worth optimising
+    # Pick whichever one gives the lowest fuel cost
     [floor(mean), ceil(mean)]
   end
 
