@@ -1,5 +1,7 @@
 # AdventOfCode2021
 
+Elixir files are in dayX/lib
+
 ## Day 1 - Sonar Sweep
 JavaScript
 
