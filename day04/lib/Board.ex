@@ -13,12 +13,26 @@ defmodule Board do
   end
 
   def mark(board = %{}, number) do
-    Map.update(board, Map.get(board, number), {number, true}, fn {^number, _} ->
-      {number, true}
-    end)
+    Map.put(board, Map.get(board, number), {number, true})
   end
 
-  def numbers_to_win(board = %{}, []) do
+  def get_marked_nums(board = %{}) do
+    Enum.filter(board, fn
+      {{_, _}, {_, true}} -> true
+      _ -> false
+    end)
+    |> Enum.map(fn {{_, _}, {num, _}} -> num end)
+  end
+
+  def get_unmarked_nums(board = %{}) do
+    Enum.filter(board, fn
+      {{_, _}, {_, false}} -> true
+      _ -> false
+    end)
+    |> Enum.map(fn {{_, _}, {num, _}} -> num end)
+  end
+
+  def numbers_to_win(_board = %{}, []) do
     throw("This board will never win")
   end
 
