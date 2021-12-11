@@ -2,18 +2,16 @@ defmodule Day11 do
   @grid_size 10
 
   def run(input_file_name) do
-    grid =
-      load_input(input_file_name)
-      |> IO.inspect()
+    grid = load_input(input_file_name)
 
-    Enum.reduce(1..10, {grid, 0}, fn i, {grid, flashes} ->
-      simulate_step(grid)
-      |> then(fn {new_grid, new_flashes} ->
-        IO.puts("Flashes on step #{i}: #{new_flashes}")
-        {new_grid, flashes + new_flashes}
-      end)
-    end)
+
+    IO.puts("Total number of flashes after 100 steps:")
+    run_simulation({grid, 0}, 100)
+    |> then(fn {_, flashes} -> flashes end)
     |> IO.inspect()
+
+    IO.puts("Steps until first synchronization:")
+    get_first_synchronization(grid)
   end
 
   defp load_input(file_name) do
@@ -27,31 +25,28 @@ defmodule Day11 do
     |> Map.new()
   end
 
+  defp run_simulation({grid, flashes}, 0) do
+    {grid, flashes}
+  end
+
+  defp run_simulation({grid, flashes}, steps) do
+    simulate_step(grid)
+      |> then(fn {new_grid, new_flashes} ->
+        {new_grid, flashes + new_flashes}
+      end)
+      |> run_simulation(steps - 1)
+  end
+
   defp simulate_step(grid) do
     grid = Map.new(grid, fn {pos, energy} -> {pos, energy + 1} end)
 
-    Enum.reduce(grid, {grid, 0}, fn
-      {pos, energy}, {grid, flashes} when energy > 9 ->
-        set_energy(grid, pos, energy)
-        |> then(fn {new_grid, new_flashes} -> {new_grid, new_flashes + flashes} end)
-
-      {_, _}, {grid, flashes} ->
-        {grid, flashes}
-    end)
+    Enum.filter(grid, fn {_pos, energy} -> energy > 9 end)
+    |> Enum.map(fn {pos, _} -> pos end)
+    |> Enum.reduce({grid, 0}, fn pos, {grid, flashes} -> flash(grid, pos, flashes) end)
   end
 
-  defp set_energy(grid, pos, energy) do
-    if energy > 9 do
-      flash(grid, pos)
-    else
-      {Map.put(grid, pos, energy), 0}
-    end
-  end
-
-  # Return the updated grid, and the number of flashes caused in this chain reaction
-  defp flash(grid, {x, y}) do
+  defp flash(grid, {x, y} = pos, flashes) do
     Enum.reduce(
-      # Neighbours
       [
         {x - 1, y - 1},
         {x, y - 1},
@@ -62,16 +57,21 @@ defmodule Day11 do
         {x, y + 1},
         {x + 1, y + 1}
       ],
-      {Map.put(grid, {x, y}, 0), 1},
-      fn
-        {i, j}, {grid, flashes} ->
-          if Map.has_key?(grid, {i, j}) and grid[{i, j}] != 0 do
-            set_energy(grid, {i, j}, grid[{i, j}] + 1)
-            |> then(fn {new_grid, new_flashes} -> {new_grid, new_flashes + flashes} end)
-          else
-            {grid, flashes}
-          end
+      {Map.put(grid, pos, 0), flashes + 1},
+      fn neighbour, {grid, flashes} ->
+        case Map.get(grid, neighbour, 0) do
+          energy when energy == 0 -> {grid, flashes}
+          energy when energy == 9 -> flash(grid, neighbour, flashes)
+          _ -> {Map.update(grid, neighbour, 1, &(&1 + 1)), flashes}
+        end
       end
     )
+  end
+
+  defp get_first_synchronization(grid) do
+    case simulate_step(grid) do
+      {_, flashes} when flashes == @grid_size * @grid_size -> 1
+      {new_grid, _} -> 1 + get_first_synchronization(new_grid)
+    end
   end
 end
