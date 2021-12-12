@@ -1,6 +1,6 @@
 defmodule Day12 do
   def run(input_file_name) do
-    graph = load_input(input_file_name) |> IO.inspect()
+    graph = load_input(input_file_name)
     {count_paths(graph, false), count_paths(graph, true)}
   end
 

@@ -11,7 +11,7 @@ defmodule AdventOfCode2021 do
     %{day: "09", title: "Smoke Basin", function: &Day11.run(&1)},
     %{day: "10", title: "Syntax Scoring", function: &Day11.run(&1)},
     %{day: "11", title: "Dumbo Octopus", function: &Day11.run(&1)},
-    %{day: "11", title: "Passage Pathing", function: &Day12.run(&1)}
+    %{day: "12", title: "Passage Pathing", function: &Day12.run(&1)}
   ]
 
   def run do
@@ -26,6 +26,6 @@ defmodule AdventOfCode2021 do
 
   defp time_task(%{day: day, title: title, function: function}) do
     {time, {part1, part2}} = :timer.tc(function, ["input"])
-    "#{day}: #{title} \t\t| Part 1: #{part1} \t\t| Part 2: #{part2} \t\t| #{time/1000}s"
+    "#{day}: #{title} \t\t| Part 1: #{part1} \t\t| Part 2: #{part2} \t\t| #{time/1_000_000}s"
   end
 end
