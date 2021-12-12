@@ -1,7 +1,24 @@
-defmodule Day08.Part2 do
+defmodule Day08 do
   def run(input_file_name) do
-    load_input(input_file_name)
-    |> Enum.reduce(0, &(&2 + decode_output(&1)))
+    outputs =
+      load_input(input_file_name)
+      |> Enum.map(&decode_output(&1))
+
+    {part1(outputs), part2(outputs)}
+  end
+
+  defp part1(outputs) do
+    Enum.map(outputs, fn output ->
+      Integer.to_string(output)
+      |> String.graphemes()
+      |> Enum.filter(&(&1 in ["1", "4", "7", "8"]))
+      |> Enum.count()
+    end)
+    |> Enum.sum()
+  end
+
+  defp part2(outputs) do
+    Enum.sum(outputs)
   end
 
   defp load_input(file_name) do

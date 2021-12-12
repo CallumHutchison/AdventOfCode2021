@@ -4,20 +4,16 @@ defmodule Day10 do
       load_input(input_file_name)
       |> parse_lines
 
-    IO.puts("Syntax error score:")
+    part1 =
+      get_syntax_errors(lines)
+      |> get_error_score
 
-    get_syntax_errors(lines)
-    |> get_error_score
-    |> IO.inspect()
+    part2 =
+      get_incomplete_lines(lines)
+      |> get_incomplete_scores
+      |> get_middle_score
 
-    IO.puts("Middle incomplete line score:")
-
-    get_incomplete_lines(lines)
-    |> get_incomplete_scores
-    |> get_middle_score
-    |> IO.inspect()
-
-    :ok
+    {part1, part2}
   end
 
   defp load_input(file_name) do

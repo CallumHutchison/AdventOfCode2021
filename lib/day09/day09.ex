@@ -6,20 +6,16 @@ defmodule Day09 do
 
     low_points = find_low_points(grid)
 
-    IO.puts("Sum of risk levels for lowest points:")
+    part1 =
+      calculate_risk_levels(low_points)
+      |> sum_risk_levels
 
-    calculate_risk_levels(low_points)
-    |> sum_risk_levels
-    |> IO.inspect()
+    part2 =
+      calculate_basins(grid, low_points)
+      |> find_largest_basin_sizes(3)
+      |> multiply_basin_sizes
 
-    IO.puts("Product of sizes of three largest basins:")
-
-    calculate_basins(grid, low_points)
-    |> find_largest_basin_sizes(3)
-    |> multiply_basin_sizes
-    |> IO.inspect()
-
-    :ok
+    {part1, part2}
   end
 
   def load_input(file_name) do

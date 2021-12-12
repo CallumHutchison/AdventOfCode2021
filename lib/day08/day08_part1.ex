@@ -1,3 +1,4 @@
+# Initial solution for Day 8. Refactored for both parts in Day08.ex
 defmodule Day08.Part1 do
   def count_seven_segment_digits(input_file_name) do
     load_input(input_file_name)
@@ -19,25 +20,11 @@ defmodule Day08.Part1 do
     {String.split(singals_string, " "), String.split(output_string, " ")}
   end
 
-  defp count_digits({input, output}, num_map) do
-    digits = decipher_digits(input)
-
+  defp count_digits({_, output}, num_map) do
     Enum.reduce(output, num_map, fn val, acc ->
       digit = get_digit_for_string(val)
       Map.update(acc, digit, 1, &(&1 + 1))
     end)
-  end
-
-  defp decipher_digits(nums) do
-    Enum.reduce(nums, %{}, fn num, acc ->
-      Map.put_new(acc, get_digit_for_string(num), get_char_set(num))
-    end)
-  end
-
-  defp get_char_set(string) do
-    String.codepoints(string)
-    |> Enum.sort()
-    |> MapSet.new()
   end
 
   defp get_digit_for_string(num) do
