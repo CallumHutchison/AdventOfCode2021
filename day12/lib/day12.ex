@@ -25,9 +25,14 @@ defmodule Day12 do
 
   defp count_paths(graph = %{}, allow_small_revisits) do
     traverse(graph, allow_small_revisits)
-      |> IO.inspect()
       |> Enum.filter(&(List.last(&1) == "end"))
+      |> then(fn paths -> if allow_small_revisits, do: Enum.filter(paths, &filter_path(&1)),else: paths end)
       |> Enum.count()
+  end
+
+  defp filter_path(path) do
+    Enum.filter(path, &(!is_big_cave(&1)))
+    |> then(&abs(Enum.count(&1) - (Enum.uniq(&1) |> Enum.count)) <= 1)
   end
 
   defp traverse(graph = %{}, allow_small_revisits) do
@@ -63,7 +68,6 @@ defmodule Day12 do
   defp can_still_revisit("start", _, allow_small_revisits), do: allow_small_revisits
   defp can_still_revisit(_, _, false), do: false
   defp can_still_revisit(node, visited_nodes, true) do
-    IO.puts("#{node}, #{!MapSet.member?(visited_nodes, node)}")
     !MapSet.member?(visited_nodes, node)
   end
 end
