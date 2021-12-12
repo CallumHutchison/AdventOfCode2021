@@ -1,23 +1,21 @@
 # AdventOfCode2021
 
-Elixir files are in dayX/lib
+**TODO: Add description**
 
-## Day 1 - Sonar Sweep
-JavaScript
+## Installation
 
-## Day 2 - Dive!
-Elixir
+If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+by adding `advent_of_code_2021` to your list of dependencies in `mix.exs`:
 
-## Day 3 - Binary Diagnostic
-JavaScript
+```elixir
+def deps do
+  [
+    {:advent_of_code_2021, "~> 0.1.0"}
+  ]
+end
+```
 
-## Day 5 - Hydrothermal Venture
-Elixir
+Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
+and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
+be found at <https://hexdocs.pm/advent_of_code_2021>.
 
-## Day 6 - Lanternfish
-Elixir
-Part 1 - O(n^2) memory
-Part 2 - O(1) memory
-
-## Day 7 - The Treachery of Whales
-Elixir
