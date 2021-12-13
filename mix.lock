@@ -1,0 +1,4 @@
+%{
+  "pane": {:hex, :pane, "0.4.1", "ca4275b5799066d52c857e7b0deb2feaba409d607419fe54cde056329d247a89", [:mix], [], "hexpm", "27a292ca86f52d4777422930c17fd4a12eaa930d86a6193665c452f94a04ff8a"},
+  "scribe": {:hex, :scribe, "0.10.0", "90e61b21fee884f58b955d1f45d7fa3e75f161ecb62bad8af6087aef3955c74f", [:mix], [{:pane, "~> 0.2", [hex: :pane, repo: "hexpm", optional: false]}], "hexpm", "3829da9c6a28b2105f0ec50e40f447bf768fb7d96717fbfceb602573f1a3c62e"},
+}

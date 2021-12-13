@@ -1,4 +1,16 @@
-defmodule Day05.PartTwo do
+defmodule Day05 do
+  def run(input_file_name) do
+    input = load_input(input_file_name)
+    {count_overlaps(input, false), count_overlaps(input, true)}
+  end
+
+  defp count_overlaps(input, allow_diagonals) do
+    create_grid(input, allow_diagonals)
+    |> Map.values()
+    |> Enum.filter(fn val -> val > 1 end)
+    |> Enum.count()
+  end
+
   defp load_input(file_name) do
     case File.read("lib/day05/#{file_name}.txt") do
       {:ok, input} -> parse_input(input)
@@ -23,13 +35,14 @@ defmodule Day05.PartTwo do
     |> List.to_tuple()
   end
 
-  defp create_grid(lines) do
+  defp create_grid(lines, allow_diagonals) do
     lines
     |> Enum.reduce(%{}, fn {{x1, y1}, {x2, y2}}, grid ->
       cond do
         x1 == x2 -> vertical_line(grid, y1..y2, x1)
         y1 == y2 -> horizontal_line(grid, x1..x2, y1)
-        true -> diagonal_line(grid, {{x1, y1}, {x2, y2}})
+        allow_diagonals -> diagonal_line(grid, {{x1, y1}, {x2, y2}})
+        true -> grid
       end
     end)
   end
@@ -51,13 +64,5 @@ defmodule Day05.PartTwo do
       grid,
       &Map.update(&2, {&1, gradient * &1 + intercept}, 1, fn val -> val + 1 end)
     )
-  end
-
-  def count_overlaps(input_file) do
-    load_input(input_file)
-    |> create_grid
-    |> Map.values()
-    |> Enum.filter(fn val -> val > 1 end)
-    |> Enum.count()
   end
 end

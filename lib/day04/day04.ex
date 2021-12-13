@@ -2,12 +2,11 @@ defmodule Day04 do
   @grid_size 5
 
   def run(input_file_name) do
-    load_input(input_file_name)
-    |> rank_boards
-    |> print_best_score
-    |> print_worst_score
+    input =
+      load_input(input_file_name)
+      |> rank_boards
 
-    :ok
+    {best_score(input), worst_score(input)}
   end
 
   def load_input(file_name) do
@@ -42,17 +41,15 @@ defmodule Day04 do
      |> Enum.sort(fn {_, rank1}, {_, rank2} -> rank1 < rank2 end)}
   end
 
-  defp print_best_score({numbers, boards}) do
-    List.first(boards) |> print_score(numbers)
-    {numbers, boards}
+  defp best_score({numbers, boards}) do
+    List.first(boards) |> score(numbers)
   end
 
-  defp print_worst_score({numbers, boards}) do
-    List.last(boards) |> print_score(numbers)
-    {numbers, boards}
+  defp worst_score({numbers, boards}) do
+    List.last(boards) |> score(numbers)
   end
 
-  defp print_score({board, rank}, numbers) do
+  defp score({board, rank}, numbers) do
     board =
       Enum.take(numbers, rank)
       |> Enum.reduce(board, &Board.mark(&2, &1))
@@ -62,6 +59,6 @@ defmodule Day04 do
       |> Enum.reduce(&(&1 + &2))
 
     last_picked_num = Enum.at(numbers, rank - 1)
-    IO.inspect("Score: #{unmarked_total * last_picked_num}")
+    unmarked_total * last_picked_num
   end
 end

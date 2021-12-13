@@ -1,12 +1,12 @@
 defmodule Day02.PartOne do
-  def calculate_distance do
-    load_input()
+  def run(input_file_name) do
+    load_input(input_file_name)
     |> parse_distances
     |> multiply_distances
   end
 
-  defp load_input do
-    {:ok, input} = File.read("lib/day02/input.txt")
+  defp load_input(file_name) do
+    {:ok, input} = File.read("lib/day02/#{file_name}.txt")
 
     input
     |> String.split(~r/\R/)
