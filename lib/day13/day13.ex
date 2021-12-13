@@ -54,20 +54,9 @@ defmodule Day13 do
   end
 
   defp fold(dots, folds) do
-    Enum.reduce(folds, dots, fn {axis, pos}, dots -> fold(dots, axis, pos) end)
-  end
-
-  defp fold(dots, "x", fold_x) do
-    MapSet.new(dots, fn
-      {x, y} when x < fold_x -> {x, y}
-      {x, y} -> {fold_x - (x - fold_x), y}
-    end)
-  end
-
-  defp fold(dots, "y", fold_y) do
-    MapSet.new(dots, fn
-      {x, y} when y < fold_y -> {x, y}
-      {x, y} -> {x, fold_y - (y - fold_y)}
+    Enum.reduce(folds, dots, fn 
+      {"x", fold_x}, dots -> MapSet.new(dots, fn {x, y} -> {fold_x - abs(x - fold_x), y} end)
+      {"y", fold_y}, dots -> MapSet.new(dots, fn {x, y} -> {x, fold_y - abs(y - fold_y)} end)
     end)
   end
 end
