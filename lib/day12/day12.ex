@@ -23,57 +23,50 @@ defmodule Day12 do
     String.upcase(cave_name) == cave_name
   end
 
-  defp count_paths(graph = %{}, allow_small_revisits) do
-    traverse(graph, allow_small_revisits)
+  defp count_paths(graph = %{}, can_revisit) do
+    traverse(graph, can_revisit)
     |> Enum.filter(&(List.last(&1) == "end"))
-    |> then(fn paths ->
-      if allow_small_revisits, do: Enum.filter(paths, &filter_path(&1)), else: paths
-    end)
     |> Enum.count()
   end
 
-  defp filter_path(path) do
-    Enum.filter(path, &(!is_big_cave(&1)))
-    |> then(&(abs(Enum.count(&1) - (Enum.uniq(&1) |> Enum.count())) <= 1))
-  end
-
-  defp traverse(graph = %{}, allow_small_revisits) do
-    traverse(graph, "start", MapSet.new(), allow_small_revisits)
+  defp traverse(graph = %{}, can_revisit) do
+    traverse(graph, "start", MapSet.new(), can_revisit)
   end
 
   defp traverse(_, "end", _, _) do
     [["end"]]
   end
 
-  defp traverse(graph = %{}, current_node, visited_nodes = %MapSet{}, allow_small_revisits) do
+  defp traverse(graph = %{}, current_node, small_nodes_visited = %MapSet{}, can_revisit) do
     Map.get(graph, current_node)
-    |> Enum.filter(&can_visit_cave(&1, visited_nodes, allow_small_revisits))
+    |> Enum.filter(&can_visit_cave(&1, small_nodes_visited, can_revisit))
     |> Enum.map(fn node ->
       traverse(
         graph,
         node,
         if(is_big_cave(current_node),
-          do: visited_nodes,
-          else: MapSet.put(visited_nodes, current_node)
+          do: small_nodes_visited,
+          else: MapSet.put(small_nodes_visited, current_node)
         ),
-        can_still_revisit(current_node, visited_nodes, allow_small_revisits)
+        can_still_revisit(node, small_nodes_visited, can_revisit)
       )
       |> Enum.map(fn path -> [current_node | path] end)
     end)
     |> Enum.reduce([], &Enum.reduce(&1, &2, fn path, acc -> [path | acc] end))
   end
 
+  # We can never revisit the start node
   defp can_visit_cave("start", _, _), do: false
 
-  defp can_visit_cave(node, visited_nodes, allow_small_revisits) do
-    !MapSet.member?(visited_nodes, node) or allow_small_revisits
+  # We can visit any large cave, any small cave we've never visited before, or any cave if we're allowed to revisit
+  defp can_visit_cave(node, small_nodes_visited, can_revisit) do
+    !MapSet.member?(small_nodes_visited, node) or can_revisit
   end
 
   # After leaving start, we can still revisit
-  defp can_still_revisit("start", _, allow_small_revisits), do: allow_small_revisits
+  defp can_still_revisit("start", _, can_revisit), do: can_revisit
   defp can_still_revisit(_, _, false), do: false
-
-  defp can_still_revisit(node, visited_nodes, true) do
-    !MapSet.member?(visited_nodes, node)
+  defp can_still_revisit(node, small_nodes_visited, true) do
+    !MapSet.member?(small_nodes_visited, node)
   end
 end
