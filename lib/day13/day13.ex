@@ -50,7 +50,7 @@ defmodule Day13 do
   end
 
   defp grid_line_to_string(dots, y, width) do
-    Enum.reduce(0..width, "", &(&2 <> if MapSet.member?(dots, {&1, y}), do: "#", else: " ")) <> "\n"
+    Enum.reduce(0..width, "", &(&2 <> if MapSet.member?(dots, {&1, y}), do: "█", else: " ")) <> "\n"
   end
 
   defp fold(dots, folds) do
