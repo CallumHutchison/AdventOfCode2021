@@ -1,9 +1,9 @@
 defmodule Day13 do
   def run(input_file_name) do
     {dots, folds} = load_input(input_file_name)
-
-    {count_dots_after_first_fold(dots, folds),
-     print_grid_after_folds(dots, folds)}
+    part1 = count_dots_after_first_fold(dots, folds)
+    print_grid_after_folds(dots, folds)
+    {part1, "See output/day13.txt"}
   end
 
   defp load_input(file_name) do
@@ -45,8 +45,8 @@ defmodule Day13 do
     positions = fold(dots, folds)
     width = Enum.map(positions, fn {x,_y} -> x end) |> Enum.max()
     height = Enum.map(positions, fn {_x,y} -> y end) |> Enum.max()
-    Enum.reduce(0..height, "", &(&2 <> grid_line_to_string(positions, &1, width)))
-    |> IO.puts
+    grid = Enum.reduce(0..height, "", &(&2 <> grid_line_to_string(positions, &1, width)))
+    File.write("output/day13.txt", grid)
   end
 
   defp grid_line_to_string(dots, y, width) do
