@@ -11,7 +11,8 @@ defmodule AdventOfCode2021 do
     %{day: "09", title: "Smoke Basin", function: &Day09.run(&1)},
     %{day: "10", title: "Syntax Scoring", function: &Day10.run(&1)},
     %{day: "11", title: "Dumbo Octopus", function: &Day11.run(&1)},
-    %{day: "12", title: "Passage Pathing", function: &Day12.run(&1)}
+    %{day: "12", title: "Passage Pathing", function: &Day12.run(&1)},
+    %{day: "13", title: "Transparent Origami", function: &Day13.run(&1)}
   ]
 
   @table_mapping [
@@ -32,7 +33,7 @@ defmodule AdventOfCode2021 do
   end
 
   defp time_task(%{day: day, title: title, function: nil}) do
-    %{day: day, title: title, part1: "n/a", part2: "n/a", time: "n/a"}
+    %{day: day, title: title, part1: "n/a - Done in JS", part2: "n/a - Done in JS", time: "n/a"}
   end
 
   defp time_task(%{day: day, title: title, function: function}) do
