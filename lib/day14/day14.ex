@@ -1,8 +1,13 @@
 defmodule Day14 do
     def run(input_file_name) do
-        {template, rules} = load_input(input_file_name) |> IO.inspect()
-        run_insertions(template, rules, 10)
-        |> part_one
+        {template, rules} = load_input(input_file_name)
+        part_one = run_insertions(template, rules, 10)
+        |> most_common_minus_least_common
+
+        part_two = run_insertions(template, rules, 40)
+        |> most_common_minus_least_common
+
+        {part_one, part_two}
     end
 
     defp load_input(file_name) do
@@ -31,11 +36,10 @@ defmodule Day14 do
         Map.put(map, pair, element)
     end
 
-    defp part_one(polymer) do
-        Enum.reduce(polymer, %{}, &Map.update(&2, &1, 1, fn val -> val + 1 end))
+    defp most_common_minus_least_common(polymer) do
+        Enum.reduce(polymer, %{}, fn {{char, _}, count}, map -> Map.update(map, char, count, &(&1 + count)) end)
         |> Map.values()
         |> Enum.sort()
-        |> IO.inspect()
         |> then(fn list -> Enum.fetch!(list, -1) - Enum.fetch!(list, 0) end)
     end
 
@@ -44,10 +48,14 @@ defmodule Day14 do
     end
 
     defp run_insertions(pairs, rules) do
-        if Map.has_key?(rules, {head, hd(tail)}) do
-            [head] ++ [Map.get(rules, {head, hd(tail)}, "")] ++ run_insertions(tail, rules)
-        else 
-            [head | run_insertions(tail, rules)]
-        end
+        Enum.flat_map(pairs, fn {pair = {x, y}, count} -> 
+            if Map.has_key?(rules, pair) do
+                insertion = Map.get(rules, pair)
+                [{{x, insertion}, count}, {{insertion, y}, count}]
+            else 
+                [{pair, count}]
+            end
+        end)
+        |> Enum.reduce(%{}, fn {pair, count}, map -> Map.update(map, pair, count, &(&1 + count)) end)
     end
 end
