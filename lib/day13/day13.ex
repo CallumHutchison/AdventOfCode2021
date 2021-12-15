@@ -37,24 +37,25 @@ defmodule Day13 do
   end
 
   defp count_dots_after_first_fold(dots, folds) do
-    fold(dots, Enum.take(folds, 1)) 
+    fold(dots, Enum.take(folds, 1))
     |> Enum.count()
   end
 
   defp print_grid_after_folds(dots, folds) do
     positions = fold(dots, folds)
-    width = Enum.map(positions, fn {x,_y} -> x end) |> Enum.max()
-    height = Enum.map(positions, fn {_x,y} -> y end) |> Enum.max()
+    width = Enum.map(positions, fn {x, _y} -> x end) |> Enum.max()
+    height = Enum.map(positions, fn {_x, y} -> y end) |> Enum.max()
     grid = Enum.reduce(0..height, "", &(&2 <> grid_line_to_string(positions, &1, width)))
     File.write("output/day13.txt", grid)
   end
 
   defp grid_line_to_string(dots, y, width) do
-    Enum.reduce(0..width, "", &(&2 <> if MapSet.member?(dots, {&1, y}), do: "█", else: " ")) <> "\n"
+    Enum.reduce(0..width, "", &(&2 <> if(MapSet.member?(dots, {&1, y}), do: "█", else: " "))) <>
+      "\n"
   end
 
   defp fold(dots, folds) do
-    Enum.reduce(folds, dots, fn 
+    Enum.reduce(folds, dots, fn
       {"x", fold_x}, dots -> MapSet.new(dots, fn {x, y} -> {fold_x - abs(x - fold_x), y} end)
       {"y", fold_y}, dots -> MapSet.new(dots, fn {x, y} -> {x, fold_y - abs(y - fold_y)} end)
     end)

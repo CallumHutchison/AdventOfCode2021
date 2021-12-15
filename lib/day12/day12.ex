@@ -66,6 +66,7 @@ defmodule Day12 do
   # After leaving start, we can still revisit
   defp can_still_revisit("start", _, can_revisit), do: can_revisit
   defp can_still_revisit(_, _, false), do: false
+
   defp can_still_revisit(node, small_nodes_visited, true) do
     !MapSet.member?(small_nodes_visited, node)
   end
