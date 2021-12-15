@@ -13,7 +13,8 @@ defmodule AdventOfCode2021 do
     %{day: "11", title: "Dumbo Octopus", function: &Day11.run(&1)},
     %{day: "12", title: "Passage Pathing", function: &Day12.run(&1)},
     %{day: "13", title: "Transparent Origami", function: &Day13.run(&1)},
-    %{day: "14", title: "Extended Polymerization", function: &Day14.run(&1)}
+    %{day: "14", title: "Extended Polymerization", function: &Day14.run(&1)},
+    %{day: "15", title: "Chiton", function: &Day15.run(&1)}
   ]
 
   @table_mapping [
@@ -27,7 +28,7 @@ defmodule AdventOfCode2021 do
   def run do
     @solutions
     |> Enum.map(&Task.async(fn -> time_task(&1) end))
-    |> Enum.map(&Task.await/1)
+    |> Enum.map(&Task.await(&1, 10000))
     |> Scribe.print(data: @table_mapping)
 
     :ok
