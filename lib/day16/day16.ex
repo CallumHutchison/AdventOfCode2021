@@ -92,25 +92,17 @@ defmodule Day16 do
     version
   end
 
-  def calculate_packet_value(%{id: 0, children: children}) do
-    Enum.map(children, &calculate_packet_value(&1))
-    |> Enum.sum()
-  end
+  def calculate_packet_value(%{id: 0, children: children}),
+    do: Enum.map(children, &calculate_packet_value(&1)) |> Enum.sum()
 
-  def calculate_packet_value(%{id: 1, children: children}) do
-    Enum.map(children, &calculate_packet_value(&1))
-    |> Enum.product()
-  end
+  def calculate_packet_value(%{id: 1, children: children}),
+    do: Enum.map(children, &calculate_packet_value(&1)) |> Enum.product()
 
-  def calculate_packet_value(%{id: 2, children: children}) do
-    Enum.map(children, &calculate_packet_value(&1))
-    |> Enum.min()
-  end
+  def calculate_packet_value(%{id: 2, children: children}),
+    do: Enum.map(children, &calculate_packet_value(&1)) |> Enum.min()
 
-  def calculate_packet_value(%{id: 3, children: children}) do
-    Enum.map(children, &calculate_packet_value(&1))
-    |> Enum.max()
-  end
+  def calculate_packet_value(%{id: 3, children: children}),
+    do: Enum.map(children, &calculate_packet_value(&1)) |> Enum.max()
 
   def calculate_packet_value(%{id: 4, value: value}), do: value
 
