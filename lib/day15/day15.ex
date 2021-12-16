@@ -1,11 +1,11 @@
 defmodule Day15 do
   def run(input_file_name) do
     {grid, {width, height}} = load_input(input_file_name)
-    part1 = Pathfinding.find_path(grid, {0, 0}, {width-1, height-1})
+    part1 = Pathfinding.find_path(grid, {0, 0}, {width - 1, height - 1})
 
     grid = scale_grid(grid, 5, {width, height})
 
-    part2 = Pathfinding.find_path(grid, {0, 0}, {(width * 5)-1, (height * 5)-1})
+    part2 = Pathfinding.find_path(grid, {0, 0}, {width * 5 - 1, height * 5 - 1})
 
     {part1, part2}
   end
@@ -30,18 +30,21 @@ defmodule Day15 do
   end
 
   defp scale_grid(grid, factor, {width, height}) do
-    Enum.map(0..((factor * factor) - 1), fn i -> 
-        {tile_x, tile_y} = {rem(i, factor), div(i, factor)}
-        Map.new(grid, fn {{x, y}, risk} -> {{x + (tile_x * width), y + (tile_y * height)}, wrap_risk_level(i, factor, risk)} end)
+    Enum.map(0..(factor * factor - 1), fn i ->
+      {tile_x, tile_y} = {rem(i, factor), div(i, factor)}
+
+      Map.new(grid, fn {{x, y}, risk} ->
+        {{x + tile_x * width, y + tile_y * height}, wrap_risk_level(i, factor, risk)}
+      end)
     end)
     |> Enum.reduce(&Map.merge(&1, &2))
   end
 
   defp wrap_risk_level(i, factor, risk) do
-    rem(i, factor) + div(i, factor) + risk
-    |> then(fn 
-        x when x > 9 -> rem(x, 9)
-        x -> x
+    (rem(i, factor) + div(i, factor) + risk)
+    |> then(fn
+      x when x > 9 -> rem(x, 9)
+      x -> x
     end)
   end
 end
