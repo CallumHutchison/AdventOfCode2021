@@ -16,7 +16,8 @@ defmodule AdventOfCode2021 do
     %{day: "14", title: "Extended Polymerization", function: &Day14.run(&1)},
     %{day: "15", title: "Chiton", function: &Day15.run(&1)},
     %{day: "16", title: "Packet Decoder", function: &Day16.run(&1)},
-    %{day: "17", title: "Tricky Shot", function: &Day17.run(&1)}
+    %{day: "17", title: "Tricky Shot", function: &Day17.run(&1)},
+    %{day: "18", title: "Snailfish", function: &Day18.run(&1)}
   ]
 
   @table_mapping [
