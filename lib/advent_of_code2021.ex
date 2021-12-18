@@ -1,6 +1,6 @@
 defmodule AdventOfCode2021 do
   @solutions [
-    %{day: "01", title: "Sonar Sweep", function: nil},
+    %{day: "01", title: "Sonar Sweep", function: &Day01.run/1},
     %{day: "02", title: "Dive!", function: &Day02.run(&1)},
     %{day: "03", title: "Binary Diagnostic", function: nil},
     %{day: "04", title: "Giant Squid", function: &Day04.run(&1)},
