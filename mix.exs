@@ -21,6 +21,7 @@ defmodule AdventOfCode2021.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:jason, "~> 1.2"},
       {:scribe, "~> 0.10"}
     ]
   end
