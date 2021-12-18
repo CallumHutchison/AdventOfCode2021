@@ -41,15 +41,15 @@ defmodule Day18 do
 
   def magnitude(number), do: number
 
-  def reduce(tree) do
-    case check_for_explosion(tree, 0) do
-      {:explode, tree, _leftover} ->
-        reduce(tree)
+  def reduce(node) do
+    case check_for_explosion(node, 0) do
+      {:explode, node, _leftover} ->
+        reduce(node)
 
-      {:ok, tree} ->
-        case check_for_split(tree) do
-          {:split, tree} -> reduce(tree)
-          {:ok, tree} -> tree
+      {:ok, node} ->
+        case check_for_split(node) do
+          {:split, node} -> reduce(node)
+          {:ok, node} -> node
         end
     end
   end
@@ -90,11 +90,11 @@ defmodule Day18 do
 
   def check_for_explosion(val, _), do: {:ok, val}
 
-  def explode_rightwards(tree, nil), do: tree
+  def explode_rightwards(node, nil), do: node
   def explode_rightwards([left, right], val), do: [explode_rightwards(left, val), right]
   def explode_rightwards(leaf, val), do: leaf + val
 
-  def explode_leftwards(tree, nil), do: tree
+  def explode_leftwards(node, nil), do: node
   def explode_leftwards([left, right], val), do: [left, explode_leftwards(right, val)]
   def explode_leftwards(leaf, val), do: leaf + val
 end
